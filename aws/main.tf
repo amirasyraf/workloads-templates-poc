@@ -1,6 +1,6 @@
 locals {
   create        = var.desired_state == "present"
-  resource_name = substr(replace(lower("${var.workload}-${var.server_name}"), "/[^a-z0-9-]/", "-"), 0, 40)
+  resource_name = substr(replace(lower("${var.workload}-${var.os}-${var.server_name}"), "/[^a-z0-9-]/", "-"), 0, 40)
   ami_owners    = var.os == "ubuntu-24.04" ? ["099720109477"] : ["amazon"]
 }
 

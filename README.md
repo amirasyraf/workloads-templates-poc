@@ -46,6 +46,11 @@ The AWS root creates:
 - one IAM role and instance profile with `AmazonSSMManagedInstanceCore`;
 - encrypted `gp3` root storage and required IMDSv2 tokens.
 
+The OS family and version are part of the immutable server identity. They are
+included in both the workload path and generated AWS resource names. A different
+OS requires a separate definition and Terraform state; it is never treated as an
+in-place update of an existing instance.
+
 The provider uses GitHub's OIDC credentials directly in the `amirasyraf` AWS
 account (`134584031874`). `allowed_account_ids` rejects credentials for any other
 account. The S3 backend is supplied by `terraform init -backend-config=...` in
@@ -63,7 +68,7 @@ Every behavioral change must be released under a new immutable semantic version
 tag. Existing server definitions remain on their pinned version until changed.
 
 ```bash
-VERSION=v0.2.0
+VERSION=v0.3.0
 git tag "$VERSION"
 git push origin "$VERSION"
 gh release create "$VERSION" --generate-notes
