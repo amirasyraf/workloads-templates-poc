@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/amirasyraf/workloads-templates-poc/compare/v0.5.0...v0.6.0) (2026-09-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* use server name as EC2 name
+
+### Features
+
+* use server name as EC2 name ([68b51dc](https://github.com/amirasyraf/workloads-templates-poc/commit/68b51dc9b90062d761a81beffbb148c114a62dc4))
+
 ## [0.5.0](https://github.com/amirasyraf/workloads-templates-poc/compare/v0.4.0...v0.5.0) (2026-09-06)
 
 
