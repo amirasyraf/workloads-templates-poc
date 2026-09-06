@@ -24,6 +24,7 @@ testing.
 ```text
 .github/workflows/
   ci.yml
+  release.yml
 aws/
   backend.tf
   main.tf
@@ -35,6 +36,8 @@ examples/
   aws-ubuntu.tfvars.json
   aws-windows.tfvars.json
 mise.toml
+release-please-config.json
+.release-please-manifest.json
 ```
 
 ## AWS Root
@@ -64,18 +67,36 @@ definition and state identity for auditability.
 
 ## Releasing
 
-Every behavioral change must be released under a new immutable semantic version
-tag. Existing server definitions remain on their pinned version until changed.
+Releases are automated with release-please. The version starts at `0.3.0` in
+`.release-please-manifest.json` and is calculated from Conventional Commit
+messages after the last release. A push to `main` creates or updates a release
+pull request. Merging that release pull request creates the immutable Git tag,
+GitHub Release, and changelog entry.
+
+Use these commit types:
+
+| Commit prefix | Release bump | Example |
+| --- | --- | --- |
+| `fix:` | Patch | `v0.3.0` -> `v0.3.1` |
+| `feat:` | Minor | `v0.3.0` -> `v0.4.0` |
+| `feat!:` or `BREAKING CHANGE:` | Minor while below `1.0.0` | `v0.3.0` -> `v0.4.0` |
+| `docs:`, `chore:`, `ci:`, `test:` | No release | No tag |
+
+The highest required bump wins when several commits are included. Breaking
+changes use a minor bump before `1.0.0` because this POC enables
+`bump-minor-pre-major`. After `1.0.0`, breaking changes use a major bump.
+
+The template release does not update `amirasyraf/workloads-poc`. That repository
+continues to use an explicit `TEMPLATE_VERSION` value and each workload pins its
+own template tag.
 
 ```bash
-VERSION=v0.3.0
-git tag "$VERSION"
-git push origin "$VERSION"
-gh release create "$VERSION" --generate-notes
+git commit -m "fix: correct AWS instance metadata"
+git push origin main
 ```
 
 Project tools are pinned in `mise.toml` and installed the same way locally and
-in CI. Before releasing:
+in CI. Before opening a release PR:
 
 ```bash
 mise install
