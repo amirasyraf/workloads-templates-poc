@@ -111,7 +111,7 @@ resource "aws_instance" "server" {
   }
 
   tags = {
-    Name = var.instance_name
+    Name = var.server_name
     OS   = var.os
   }
 

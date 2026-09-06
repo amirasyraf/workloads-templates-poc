@@ -48,16 +48,6 @@ variable "server_name" {
   }
 }
 
-variable "instance_name" {
-  description = "AWS Name tag for the EC2 instance."
-  type        = string
-
-  validation {
-    condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$", var.instance_name))
-    error_message = "instance_name must be 1-128 characters using letters, digits, spaces, dots, underscores, or hyphens."
-  }
-}
-
 variable "desired_state" {
   description = "Whether the server and its supporting resources should exist."
   type        = string
