@@ -35,6 +35,8 @@ aws/
 examples/
   aws-ubuntu.tfvars.json
   aws-windows.tfvars.json
+catalog/
+  platforms.json
 mise.toml
 release-please-config.json
 .release-please-manifest.json
@@ -53,6 +55,13 @@ The OS family and version are part of the immutable server identity. They are
 included in both the workload path and generated AWS resource names. A different
 OS requires a separate definition and Terraform state; it is never treated as an
 in-place update of an existing instance.
+
+The catalog at `catalog/platforms.json` is the source of truth for OS catalog
+keys and AWS image-resolution parameters. Its entries intentionally contain only
+the SSM parameter path. The workload pipeline reads the catalog from the pinned
+template release, and the AWS root validates that the selected OS key exists.
+The catalog key is also the value of the `os` variable and the OS directory in a
+workload definition, for example `ubuntu24`.
 
 The provider uses GitHub's OIDC credentials directly in the `amirasyraf` AWS
 account (`134584031874`). `allowed_account_ids` rejects credentials for any other

@@ -1,7 +1,8 @@
 locals {
+  catalog       = jsondecode(file("${path.module}/../catalog/platforms.json"))
   create        = var.desired_state == "present"
+  os_definition = try(local.catalog.platforms.aws.operating_systems[var.os], null)
   resource_name = substr(replace(lower("${var.workload}-${var.os}-${var.server_name}"), "/[^a-z0-9-]/", "-"), 0, 40)
-  ami_owners    = var.os == "ubuntu-24.04" ? ["099720109477"] : ["amazon"]
 }
 
 data "aws_subnet" "selected" {
@@ -10,8 +11,7 @@ data "aws_subnet" "selected" {
 }
 
 data "aws_ami" "selected" {
-  count  = local.create ? 1 : 0
-  owners = local.ami_owners
+  count = local.create ? 1 : 0
 
   filter {
     name   = "image-id"
@@ -117,13 +117,13 @@ resource "aws_instance" "server" {
 
   lifecycle {
     precondition {
-      condition     = contains(data.aws_ec2_instance_type.selected[0].supported_architectures, data.aws_ami.selected[0].architecture)
-      error_message = "The selected instance type does not support the pinned AMI architecture."
+      condition     = local.os_definition != null
+      error_message = "The selected OS is not defined in the pinned platform catalog."
     }
 
     precondition {
-      condition     = var.os != "windows-2025" || var.root_volume_size >= 30
-      error_message = "Windows Server 2025 requires a root volume of at least 30 GiB."
+      condition     = contains(data.aws_ec2_instance_type.selected[0].supported_architectures, data.aws_ami.selected[0].architecture)
+      error_message = "The selected instance type does not support the pinned AMI architecture."
     }
   }
 

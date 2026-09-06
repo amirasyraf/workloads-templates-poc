@@ -60,12 +60,12 @@ variable "desired_state" {
 }
 
 variable "os" {
-  description = "Operating system installed by the pinned AMI."
+  description = "OS catalog key installed by the pinned AMI, for example ubuntu24."
   type        = string
 
   validation {
-    condition     = contains(["ubuntu-24.04", "windows-2025"], var.os)
-    error_message = "os must be ubuntu-24.04 or windows-2025."
+    condition     = can(regex("^[a-z0-9][a-z0-9_-]{0,31}$", var.os))
+    error_message = "os must be a valid lowercase catalog key."
   }
 }
 

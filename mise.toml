@@ -7,7 +7,7 @@ terraform = "1.14.8"
 description = "Validate workflows and Terraform"
 run = [
   "actionlint .github/workflows/*.yml",
-  "jq empty release-please-config.json .release-please-manifest.json",
+  "jq empty catalog/platforms.json release-please-config.json .release-please-manifest.json",
   "terraform -chdir=aws fmt -check",
   "terraform -chdir=aws init -backend=false -input=false",
   "terraform -chdir=aws validate",

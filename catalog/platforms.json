@@ -1,0 +1,10 @@
+{
+  "platforms": {
+    "aws": {
+      "operating_systems": {
+        "ubuntu24": "/aws/service/canonical/ubuntu/server/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id",
+        "win2025": "/aws/service/ami-windows-latest/Windows_Server-2025-English-Full-Base"
+      }
+    }
+  }
+}
