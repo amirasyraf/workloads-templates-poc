@@ -46,9 +46,13 @@ The AWS root creates:
 - one IAM role and instance profile with `AmazonSSMManagedInstanceCore`;
 - encrypted `gp3` root storage and required IMDSv2 tokens.
 
-The provider starts with GitHub's OIDC credentials in the state account, then
-assumes `AWSControlTowerExecution` in the target workload account. The S3 backend
-is supplied by `terraform init -backend-config=...` in the workload pipeline.
+The provider uses GitHub's OIDC credentials directly in the `amirasyraf` AWS
+account (`134584031874`). `allowed_account_ids` rejects credentials for any other
+account. The S3 backend is supplied by `terraform init -backend-config=...` in
+the workload pipeline.
+
+The example definitions use a deliberately invalid placeholder subnet ID.
+Replace it with a subnet from account `134584031874` before planning.
 
 Set `desired_state` to `absent` to destroy all resources while retaining the
 definition and state identity for auditability.
@@ -59,9 +63,10 @@ Every behavioral change must be released under a new immutable semantic version
 tag. Existing server definitions remain on their pinned version until changed.
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
-gh release create v0.1.0 --generate-notes
+VERSION=v0.2.0
+git tag "$VERSION"
+git push origin "$VERSION"
+gh release create "$VERSION" --generate-notes
 ```
 
 Project tools are pinned in `mise.toml` and installed the same way locally and

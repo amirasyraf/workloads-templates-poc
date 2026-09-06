@@ -4,7 +4,7 @@ variable "template_version" {
 
   validation {
     condition     = can(regex("^v[0-9]+\\.[0-9]+\\.[0-9]+$", var.template_version))
-    error_message = "template_version must be a semantic version tag such as v0.1.0."
+    error_message = "template_version must be a semantic version tag such as v1.2.3."
   }
 }
 
@@ -15,17 +15,6 @@ variable "aws_account_id" {
   validation {
     condition     = can(regex("^[0-9]{12}$", var.aws_account_id))
     error_message = "aws_account_id must contain exactly 12 digits."
-  }
-}
-
-variable "aws_assume_role_name" {
-  description = "Role assumed in the target AWS account."
-  type        = string
-  default     = "AWSControlTowerExecution"
-
-  validation {
-    condition     = length(var.aws_assume_role_name) > 0
-    error_message = "aws_assume_role_name cannot be empty."
   }
 }
 
