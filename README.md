@@ -51,8 +51,8 @@ account (`134584031874`). `allowed_account_ids` rejects credentials for any othe
 account. The S3 backend is supplied by `terraform init -backend-config=...` in
 the workload pipeline.
 
-The example definitions use a deliberately invalid placeholder subnet ID.
-Replace it with a subnet from account `134584031874` before planning.
+The example definitions use public subnet `subnet-0a1d48f2ff2bd0332` in account
+`134584031874` and `ap-southeast-1`.
 
 Set `desired_state` to `absent` to destroy all resources while retaining the
 definition and state identity for auditability.
