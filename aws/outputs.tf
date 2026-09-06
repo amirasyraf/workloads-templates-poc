@@ -3,6 +3,11 @@ output "instance_id" {
   value       = try(aws_instance.server[0].id, null)
 }
 
+output "instance_name" {
+  description = "Configured AWS Name tag, or null when desired_state is absent."
+  value       = try(aws_instance.server[0].tags.Name, null)
+}
+
 output "private_ip" {
   description = "Private IPv4 address, or null when desired_state is absent."
   value       = try(aws_instance.server[0].private_ip, null)

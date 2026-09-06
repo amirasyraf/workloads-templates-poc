@@ -51,6 +51,10 @@ The AWS root creates:
 - one IAM role and instance profile with `AmazonSSMManagedInstanceCore`;
 - encrypted `gp3` root storage and required IMDSv2 tokens.
 
+The instance display name is not derived from the path. Set `instance_name` in
+the definition to control the EC2 `Name` tag. `server_name` remains the stable
+path and state identity.
+
 The OS family and version are part of the immutable server identity. They are
 included in both the workload path and generated AWS resource names. A different
 OS requires a separate definition and Terraform state; it is never treated as an
